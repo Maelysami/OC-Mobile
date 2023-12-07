@@ -24,7 +24,8 @@ jobs:
 
       - name: Build React Native app
         run: |
-          npx react-native build-android --variant=release
+          npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+          cd android && ./gradlew assembleRelease
 
       - name: Archive Build Artifact
         uses: actions/upload-artifact@v2
@@ -55,4 +56,4 @@ jobs:
 
       - name: Deploy APK using scp with generated RSA private key
         run: |
-          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./android/app/build/outputs/apk/release/app-release.apk maelys@51.178.30.100:~/
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ./android/app/build/outputs/apk/release/app-release.apk maelys@51.178.30.100:~/oc-mobile
